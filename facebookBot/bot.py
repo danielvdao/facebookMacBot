@@ -20,29 +20,34 @@ else:
 	account_sid = login_info[2].replace('\n','')
 	auth_token = login_info[3].replace('\n','')
 
-# Go to developers.facebook.com and generate an auth token #
-fb_token = "CAACEdEose0cBALFgMY4ixE694ghOHAcU8OKnwjNyjixfVQfgbbRdJVB6iaxlTpBciN7qsk6FKU86lAhVoWt17BFHurQrx1Jlno4R92uJgXlQgwJ9zDxXLa08I2UDQ3lF0QjRPpokLEIJf5QBObD0CnJz6Wn6F0fpObpxbM3lxEiOigEozpfy1q5v25yVqVY5cr2RSwZDZD"
+# Go to https://developers.facebook.com/tools/explorer and generate an auth token #
+fb_token = "CAACEdEose0cBAKGX2kZCqOOR3CjGHcLK663ijiO448PwDT3HcsfnoeaDzfPJlbZCrrKJhA0KA72ZAYSXhJa6Dq4PMP4JaiWeZBcX5k8ZAFZCHkoh0EmDHUYy5BDVl21uMCCqLFVXvWlQU9qSKmxg8aNPs39KT9ZAsfhP4Ave7LzvZBsUXpZBq6QMWiky8tWZAW36t5ZAzDZCQi3bqAZDZD"
 
 # Get the group ID also #
 group_id = "381628841954441"
 graph = facebook.GraphAPI(fb_token)
-posts_query = "SELECT post_id, message FROM stream WHERE source_id =" + group_id + " LIMIT 50"
+posts_query = "SELECT post_id, message FROM stream WHERE source_id =" + group_id + " LIMIT 100"
 client = TwilioRestClient(account_sid, auth_token)
 
-
+# Function to pull all the posts #
 def posts():
 	# Getting all the comments...  #
 	post_wall = graph.fql(query=posts_query)
-
+	item_count = 0
+	
+	# Get the item counts  #
 	for post in post_wall:
-		msg = post['message']
-		post_id = post['post_id']
+		msg = str(post['message'])
 		
-		print str(msg)
-		print 'Post ID: ' + post_id
-		print ''
-		# print str(name)
+		if 'macbook' in msg.lower():
+			item_count += 1
 
+	send_txt(item_count)
+
+# Function send the text message using twilio #
+def send_txt(item_count):
+	item_count = str(item_count)
+	message = client.messages.create(to="+18322739257", from_="+18326102549", body="in the last 100 sales there were " + item_count + " Macbook posts.")
 
 def main():
 	posts()
