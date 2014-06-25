@@ -34,8 +34,10 @@ client = TwilioRestClient(account_sid, auth_token)
 def posts():
 	# Getting all the comments...  #
 	post_wall = graph.fql(query=posts_query)
-
+	names = []
+	links = []
 	item_count = 0
+	
 	# Get the item counts and the links for each post #
 	for post in post_wall:
 		msg = str(post['message'])
@@ -43,14 +45,14 @@ def posts():
 		name_query = "SELECT first_name, last_name FROM user WHERE uid =" + str(post['actor_id'])
 		name_query = graph.fql(query=name_query)
 		
-		if 'macbook' in msg.lower():
+		if 'macbook' in msg.lower() and 'buying' not in msg.lower():
 			item_count += 1
-			print name_query
 
+	print names
 	# send_txt(item_count)
 
 # Function to send the text message using twilio #
-def send_txt(item_count):
+def send_txt(item_count, names, links):
 	item_count = str(item_count)
 	message = client.messages.create(to="+18322739257", from_="+18326102549", body="in the last 100 sales there were " + item_count + " Macbook posts.")
 
