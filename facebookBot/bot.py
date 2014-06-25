@@ -26,22 +26,26 @@ fb_token = "CAACEdEose0cBAKGX2kZCqOOR3CjGHcLK663ijiO448PwDT3HcsfnoeaDzfPJlbZCrrK
 # Get the group ID also #
 group_id = "381628841954441"
 graph = facebook.GraphAPI(fb_token)
-posts_query = "SELECT post_id, message, permalink FROM stream WHERE source_id =" + group_id + " LIMIT 100"
+posts_query = "SELECT post_id, message, permalink, actor_id FROM stream WHERE source_id =" + group_id + " LIMIT 100"
+
 client = TwilioRestClient(account_sid, auth_token)
 
 # Function to pull all the posts #
 def posts():
 	# Getting all the comments...  #
 	post_wall = graph.fql(query=posts_query)
+
 	item_count = 0
-	
 	# Get the item counts and the links for each post #
 	for post in post_wall:
 		msg = str(post['message'])
 		test = str(post['permalink'])
+		name_query = "SELECT first_name, last_name FROM user WHERE uid =" + str(post['actor_id'])
+		name_query = graph.fql(query=name_query)
+		
 		if 'macbook' in msg.lower():
 			item_count += 1
-			print test
+			print name_query
 
 	# send_txt(item_count)
 
