@@ -20,4 +20,25 @@ else:
 	account_sid = login_info[2].replace('\n','')
 	auth_token = login_info[3].replace('\n','')
 
+# Go to developers.facebook.com and generate an auth token #
+fb_token = ""
+
+# Get the group ID also #
+group_id = "381628841954441"
+graph = facebook.GraphAPI(fb_token)
+
 client = TwilioRestClient(account_sid, auth_token)
+
+main()
+
+def posts():
+	# Getting all the comments...  #
+	post_wall = graph.fql(query=posts_query)
+
+	for post in post_wall:
+		msg = post['message']
+		print str(msg)
+
+
+def main():
+	posts()
