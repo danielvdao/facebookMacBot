@@ -19,10 +19,9 @@ else:
 	facebook_pwd = login_info[1].replace('\n','')
 	account_sid = login_info[2].replace('\n','')
 	auth_token = login_info[3].replace('\n','')
-	fb_token = login_info[4].replace('\n', '')
 
 # Go to developers.facebook.com and generate an auth token #
-fb_token = "CAACEdEose0cBACZAjmgZB8BOZBrsLUVGgO0mGKYnKRGkNW3kVLdgGoL19yPJqF0iizIGAsUkRgdGM0YSkwbcGCMdm5mlKrTZCw81r4OWQNflZABnlNiZCkPyG9O8vOk7tojHeRVoCCCdxsEi58q9OIVHgWuNIbCub1Gj1MeUdz4LakBB14x7TvWMODNjZCCsrK2TBnAtR4uqQZDZD"
+fb_token = "CAACEdEose0cBALFgMY4ixE694ghOHAcU8OKnwjNyjixfVQfgbbRdJVB6iaxlTpBciN7qsk6FKU86lAhVoWt17BFHurQrx1Jlno4R92uJgXlQgwJ9zDxXLa08I2UDQ3lF0QjRPpokLEIJf5QBObD0CnJz6Wn6F0fpObpxbM3lxEiOigEozpfy1q5v25yVqVY5cr2RSwZDZD"
 
 # Get the group ID also #
 group_id = "381628841954441"
@@ -37,7 +36,12 @@ def posts():
 
 	for post in post_wall:
 		msg = post['message']
+		post_id = post['post_id']
+		
 		print str(msg)
+		print 'Post ID: ' + post_id
+		print ''
+		# print str(name)
 
 
 def main():
