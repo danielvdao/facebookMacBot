@@ -9,7 +9,8 @@ from twilio.rest import TwilioRestClient
 if 'DYNO' in os.environ:
 	account_sid = os.environ['TWILIO_SID']
 	auth_token = os.environ['TWILIO_AUTH']
-
+	app_id = os.environ['UTBST_APPID']
+	app_secret = os.environ['UTBST_APPSECRET']
 # Else, use the login.properties file #
 else:
 	with open('login.properties', 'r') as loginFile:
@@ -20,7 +21,15 @@ else:
 	account_sid = login_info[2].replace('\n','')
 	auth_token = login_info[3].replace('\n','')
 
+	if len(args) > 1:
+		if args[2] == '--extend':
+			app_id = login_info[4]
+			app_secret = login_info[5]
 # Go to https://developers.facebook.com/tools/explorer and generate an auth token #
+
+# Attempting to extend the access token #
+result = graph.extend_access_token(app_id, app_secret)
+fb_token = result['access_token']
 fb_token = "CAACEdEose0cBACo6sZCic9ZArG90MyWIBbZA7kM2WEsRzM7oUZACWQq4mnDYnr5Ta7hyC8qLOIEMlQ0FbvgHIgKt0PaPGxnsZB7iGUMJfWbAZBJOchVyYVKnJ1Xe7oLn4VhaIJ5D5sQvpQrV3z02UQgdP1vKoGZCH0yNWBTmYabgKSYmlD3o6RgyNg8vQBOuQsKvhPcVxp2SQZDZD"
 
 # Get the group ID also #
