@@ -21,7 +21,7 @@ else:
 	auth_token = login_info[3].replace('\n','')
 
 # Go to https://developers.facebook.com/tools/explorer and generate an auth token #
-fb_token = "CAACEdEose0cBAIimRJJZCZC20QHxM8auAsWBM4FCF22p5sDNJJyZBVWku9eKo4ZAirZBabQaZCRtlWgKtcLYi4gSzqM9ATk3JuuOk4dU3NwJgl7x1CUEohXv5bkxPa9grQdTZBhJoAdtlPbflakb3nl5TjlSHw8NlLc0iU2FdIEe4Vr7PZAdbzzhpffAZAvHDujEPNNioZC6Y0XgZDZD"
+fb_token = "CAACEdEose0cBACo6sZCic9ZArG90MyWIBbZA7kM2WEsRzM7oUZACWQq4mnDYnr5Ta7hyC8qLOIEMlQ0FbvgHIgKt0PaPGxnsZB7iGUMJfWbAZBJOchVyYVKnJ1Xe7oLn4VhaIJ5D5sQvpQrV3z02UQgdP1vKoGZCH0yNWBTmYabgKSYmlD3o6RgyNg8vQBOuQsKvhPcVxp2SQZDZD"
 
 # Get the group ID also #
 group_id = "381628841954441"
@@ -39,22 +39,37 @@ def posts():
 	
 	# Get the item counts and the links for each post #
 	for post in post_wall:
-		msg = str(post['message'])
+		msg = post['message']
 		name_query = "SELECT first_name, last_name FROM user WHERE uid =" + str(post['actor_id'])
 		name_query = graph.fql(query=name_query)
 		
 		if 'macbook' in msg.lower():
 			name_list = name_query[0]
-			temp_name = str(name_list['first_name']) + ' ' + str(name_list['last_name'])
+			temp_name = str(name_list['first_name']) + ' ' + str(name_list['last_name']) + ', '
 			item_count += 1
+			names.append(temp_name)
 
-	# send_txt(item_count, names)
+	# if item_count > 2:
+	# 	temp = 'and' + names[len(names) - 1]
+	# 	names[len(names) - 1] = temp
+
+	send_txt(item_count, names)
 
 # Function to send the text message using twilio #
 def send_txt(item_count, names):
 
 	item_count = str(item_count)
-	message = client.messages.create(to="+18322739257", from_="+18326102549", body="in the last 100 sales there were " + item_count + " Macbook posts.")
+	all_names = "".join(names)
+	all_names = all_names[:-2]
+
+	# Grammatical cases because let's be honest, english matters #
+
+	if item_count < 1:
+		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made.")
+	elif item_count > 1:
+		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made by " + all_names + ".")
+	else:
+		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there was " + item_count + " Macbook post made by " + all_names + ".")
 
 def main():
 	posts()
