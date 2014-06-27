@@ -1,6 +1,9 @@
 # Made by Daniel Dao #
 # A facebook bot which scans everyday and sends a text for posts concerning MacBooks #
-import facebook, time, os, sys 
+import facebook 
+import time 
+import os 
+import sys 
 from twilio.rest import TwilioRestClient 
 
 # Get the values for global objects #
@@ -20,21 +23,19 @@ else:
 	facebook_pwd = login_info[1].replace('\n','')
 	account_sid = login_info[2].replace('\n','')
 	auth_token = login_info[3].replace('\n','')
-
-	if len(args) > 1:
-		if args[2] == '--extend':
-			app_id = login_info[4]
-			app_secret = login_info[5]
-# Go to https://developers.facebook.com/tools/explorer and generate an auth token #
-
-# Attempting to extend the access token #
-result = graph.extend_access_token(app_id, app_secret)
-fb_token = result['access_token']
-# fb_token = "CAACEdEose0cBACo6sZCic9ZArG90MyWIBbZA7kM2WEsRzM7oUZACWQq4mnDYnr5Ta7hyC8qLOIEMlQ0FbvgHIgKt0PaPGxnsZB7iGUMJfWbAZBJOchVyYVKnJ1Xe7oLn4VhaIJ5D5sQvpQrV3z02UQgdP1vKoGZCH0yNWBTmYabgKSYmlD3o6RgyNg8vQBOuQsKvhPcVxp2SQZDZD"
+	app_id = login_info[4].replace('\n','')
+	app_secret = login_info[5].replace('\n','')
+	fb_token = login_info[6].replace('\n','')
 
 # Get the group ID also #
 group_id = "381628841954441"
 graph = facebook.GraphAPI(fb_token)
+
+# Only comment this in if extending the token #
+# result = graph.extend_access_token(app_id, app_secret)
+# fb_token = result['access_token']
+# print fb_token
+
 posts_query = "SELECT post_id, message, permalink, actor_id FROM stream WHERE source_id =" + group_id + " LIMIT 50"
 
 client = TwilioRestClient(account_sid, auth_token)
@@ -58,10 +59,6 @@ def posts():
 			item_count += 1
 			names.append(temp_name)
 
-	# if item_count > 2:
-	# 	temp = 'and' + names[len(names) - 1]
-	# 	names[len(names) - 1] = temp
-
 	send_txt(item_count, names)
 
 # Function to send the text message using twilio #
@@ -73,9 +70,9 @@ def send_txt(item_count, names):
 
 	# Grammatical cases because let's be honest, english matters #
 
-	if item_count < 1:
+	if int(item_count) < 1:
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made.")
-	elif item_count > 1:
+	elif int(item_count) > 1:
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made by " + all_names + ".")
 	else:
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there was " + item_count + " Macbook post made by " + all_names + ".")
