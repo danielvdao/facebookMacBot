@@ -30,7 +30,7 @@ else:
 # Attempting to extend the access token #
 result = graph.extend_access_token(app_id, app_secret)
 fb_token = result['access_token']
-fb_token = "CAACEdEose0cBACo6sZCic9ZArG90MyWIBbZA7kM2WEsRzM7oUZACWQq4mnDYnr5Ta7hyC8qLOIEMlQ0FbvgHIgKt0PaPGxnsZB7iGUMJfWbAZBJOchVyYVKnJ1Xe7oLn4VhaIJ5D5sQvpQrV3z02UQgdP1vKoGZCH0yNWBTmYabgKSYmlD3o6RgyNg8vQBOuQsKvhPcVxp2SQZDZD"
+# fb_token = "CAACEdEose0cBACo6sZCic9ZArG90MyWIBbZA7kM2WEsRzM7oUZACWQq4mnDYnr5Ta7hyC8qLOIEMlQ0FbvgHIgKt0PaPGxnsZB7iGUMJfWbAZBJOchVyYVKnJ1Xe7oLn4VhaIJ5D5sQvpQrV3z02UQgdP1vKoGZCH0yNWBTmYabgKSYmlD3o6RgyNg8vQBOuQsKvhPcVxp2SQZDZD"
 
 # Get the group ID also #
 group_id = "381628841954441"
