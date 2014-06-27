@@ -4,6 +4,7 @@ import facebook
 import time 
 import os 
 import sys 
+import re 
 from twilio.rest import TwilioRestClient 
 
 # Get the values for global objects #
@@ -36,7 +37,7 @@ graph = facebook.GraphAPI(fb_token)
 # fb_token = result['access_token']
 # print fb_token
 
-posts_query = "SELECT post_id, message, permalink, actor_id FROM stream WHERE source_id =" + group_id + " LIMIT 50"
+posts_query = "SELECT post_id, message, permalink, actor_id FROM stream WHERE source_id =" + group_id + " LIMIT 200"
 
 client = TwilioRestClient(account_sid, auth_token)
 
@@ -53,11 +54,16 @@ def posts():
 		name_query = "SELECT first_name, last_name FROM user WHERE uid =" + str(post['actor_id'])
 		name_query = graph.fql(query=name_query)
 		
-		if 'macbook' in msg.lower():
-			name_list = name_query[0]
-			temp_name = str(name_list['first_name']) + ' ' + str(name_list['last_name']) + ', '
-			item_count += 1
-			names.append(temp_name)
+		if 'macbook' in msg.lower() and 'buying' not in msg.lower():
+			# Easiest way to do this is check if price is 3 or 4, otherwise not selling macbook #
+			match = re.search(r'\$[\d]{3,4}',msg)
+			if match != None:
+				item_count += 1
+				name_list = name_query[0]
+				temp_name_price = str(name_list['first_name']) + ' ' + str(name_list['last_name']) + ' - ' + str(match.group()) +'\n'
+				names.append(temp_name_price)
+
+
 
 	send_txt(item_count, names)
 
@@ -66,16 +72,14 @@ def send_txt(item_count, names):
 
 	item_count = str(item_count)
 	all_names = "".join(names)
-	all_names = all_names[:-2]
+	all_names = all_names[:-1]
 
 	# Grammatical cases because let's be honest, english matters #
 
-	if int(item_count) < 1:
+	if int(item_count) == 0:
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made.")
-	elif int(item_count) > 1:
-		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made by " + all_names + ".")
 	else:
-		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there was " + item_count + " Macbook post made by " + all_names + ".")
+		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 200 posts there were " + item_count + " Macbook posts made by:\n " + all_names)
 
 def main():
 	posts()
