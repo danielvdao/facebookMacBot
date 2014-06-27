@@ -15,6 +15,10 @@ if 'DYNO' in os.environ:
 	auth_token = os.environ['TWILIO_AUTH']
 	app_id = os.environ['UTBST_APPID']
 	app_secret = os.environ['UTBST_APPSECRET']
+	fb_token = os.environ['UTBST_FBTOKEN']
+	facebook_user = os.environ['FB_USER']
+	facebook_pwd = os.environ['FB_PWD']
+	
 # Else, use the login.properties file #
 else:
 	with open('login.properties', 'r') as loginFile:
@@ -55,15 +59,13 @@ def posts():
 		name_query = graph.fql(query=name_query)
 		
 		if 'macbook' in msg.lower() and 'buying' not in msg.lower():
-			# Easiest way to do this is check if price is 3 or 4, otherwise not selling macbook #
+			# Easiest way to do this is check if price is 3 or 4, otherwise probably not selling macbook #
 			match = re.search(r'\$[\d]{3,4}',msg)
 			if match != None:
 				item_count += 1
 				name_list = name_query[0]
 				temp_name_price = str(name_list['first_name']) + ' ' + str(name_list['last_name']) + ' - ' + str(match.group()) +'\n'
 				names.append(temp_name_price)
-
-
 
 	send_txt(item_count, names)
 
