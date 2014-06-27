@@ -8,7 +8,7 @@ A Facebook bot used to scan the UT Buy/Sell/Trade page to find Macbook sales. In
 - ~~Integrate with Twilio API~~ Done. 
 - ~~Pull Facebook data from the UT Buy/Sell/Trade page~~ Done. 
 - ~~Parse comments for MacBook sales~~ Done. 
-- Generate an extended access token every run. 
+- ~~Generate an extended access token every run.~~ Done.  
 - ~~Set up Heroku variables~~ Done. 
 - Get the user name for the post and the price. 
 
