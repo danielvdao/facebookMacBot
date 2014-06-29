@@ -6,6 +6,8 @@ import os
 import sys 
 import re 
 from twilio.rest import TwilioRestClient 
+from fbxmpp import SendMsgBot
+# from util import log, Color
 
 # Get the values for global objects #
 
@@ -51,7 +53,7 @@ def posts():
 	post_wall = graph.fql(query=posts_query)
 	names = []
 	item_count = 0
-	
+	messages = 'testing'
 	# Get the item counts and the links for each post #
 	for post in post_wall:
 		msg = post['message']
@@ -68,6 +70,7 @@ def posts():
 				names.append(temp_name_price)
 
 	send_txt(item_count, names)
+	send_msg(item_count, messages)
 
 # Function to send the text message using twilio #
 def send_txt(item_count, names):
@@ -82,6 +85,25 @@ def send_txt(item_count, names):
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made.")
 	else:
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 200 posts there were " + item_count + " Macbook posts made by:\n " + all_names)
+
+# Function to send the facebook message to Hoai Truong #
+def send_msg(item_count, messages):
+	# Sender #
+	jid = '623537891@chat.facebook.com'
+
+	# Recepient #
+	to = '-100000055336344@chat.facebook.com'
+
+	xmpp = SendMsgBot(jid,to, unicode(messages))
+
+	xmpp.credentials['apikey'] = app_id
+	xmpp.credentials['access_token'] = fb_token
+
+	if xmpp.connect(('chat.facebook.com', 5222)):
+		xmpp.process(block=True)
+		print 'sent'
+	else:
+		print 'message failed'
 
 def main():
 	posts()
