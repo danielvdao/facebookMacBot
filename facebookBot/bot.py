@@ -7,7 +7,6 @@ import sys
 import re 
 from twilio.rest import TwilioRestClient 
 from fbxmpp import SendMsgBot
-# from util import log, Color
 
 # Get the values for global objects #
 
@@ -96,7 +95,7 @@ def send_msg(item_count, messages):
 
 	xmpp = SendMsgBot(jid,to, unicode(messages))
 
-	xmpp.credentials['apikey'] = app_id
+	xmpp.credentials['api_key'] = app_id
 	xmpp.credentials['access_token'] = fb_token
 
 	if xmpp.connect(('chat.facebook.com', 5222)):
