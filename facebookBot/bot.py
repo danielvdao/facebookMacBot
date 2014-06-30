@@ -69,7 +69,7 @@ def posts():
 				names.append(temp_name_price)
 
 	send_txt(item_count, names)
-	send_msg(item_count, messages)
+	# send_msg(item_count, messages)
 
 # Function to send the text message using twilio #
 def send_txt(item_count, names):
