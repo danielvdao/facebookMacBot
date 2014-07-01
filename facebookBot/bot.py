@@ -5,8 +5,12 @@ import time
 import os 
 import sys 
 import re 
+import sleekxmpp
+import logging
 from twilio.rest import TwilioRestClient 
 from fbxmpp import SendMsgBot
+
+# logging.basicConfig(level=logging.DEBUG)
 
 # Get the values for global objects #
 
@@ -69,7 +73,7 @@ def posts():
 				names.append(temp_name_price)
 
 	send_txt(item_count, names)
-	# send_msg(item_count, messages)
+	send_msg(item_count, messages)
 
 # Function to send the text message using twilio #
 def send_txt(item_count, names):
@@ -93,7 +97,7 @@ def send_msg(item_count, messages):
 	# Recepient #
 	to = '-100000055336344@chat.facebook.com'
 
-	xmpp = SendMsgBot(jid,to, unicode(messages))
+	xmpp = SendMsgBot(jid,facebook_pwd,to, unicode(messages))
 
 	xmpp.credentials['api_key'] = app_id
 	xmpp.credentials['access_token'] = fb_token
