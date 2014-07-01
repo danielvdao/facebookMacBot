@@ -46,7 +46,7 @@ graph = facebook.GraphAPI(fb_token)
 # fb_token = result['access_token']
 # print fb_token
 
-posts_query = "SELECT post_id, message, permalink, actor_id FROM stream WHERE source_id =" + group_id + " LIMIT 200"
+posts_query = "SELECT post_id, message, permalink, actor_id FROM stream WHERE source_id =" + group_id + " LIMIT 50"
 
 client = TwilioRestClient(account_sid, auth_token)
 
