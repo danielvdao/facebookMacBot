@@ -12,7 +12,7 @@ A Facebook bot used to scan the UT Buy/Sell/Trade page to find Macbook sales. In
 - ~~Set up Heroku variables~~ Done. 
 - ~~Get the user name for the post and the price~~ Done with amazing regexes.
 - Make the program notify me when the deadline is coming to extend the token (Lasts 60 days, hooray!)
-- Message Hoai Truong information through my account
+- ~~Message Hoai Truong information through my account~~ Done. 
 
 
 
