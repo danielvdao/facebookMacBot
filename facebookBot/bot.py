@@ -56,7 +56,6 @@ def posts():
 	post_wall = graph.fql(query=posts_query)
 	names = []
 	item_count = 0
-	messages = 'testing'
 	# Get the item counts and the links for each post #
 	for post in post_wall:
 		msg = post['message']
@@ -73,11 +72,11 @@ def posts():
 				names.append(temp_name_price)
 
 	send_txt(item_count, names)
-	send_msg(item_count, messages)
+	send_msg(item_count, names)
 
 # Function to send the text message using twilio #
 def send_txt(item_count, names):
-
+	# Standard declarations #
 	item_count = str(item_count)
 	all_names = "".join(names)
 	all_names = all_names[:-1]
@@ -90,14 +89,24 @@ def send_txt(item_count, names):
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 200 posts there were " + item_count + " Macbook posts made by:\n " + all_names)
 
 # Function to send the facebook message to Hoai Truong #
-def send_msg(item_count, messages):
+def send_msg(item_count, names):
+	# Standard declarations #
+	item_count = str(item_count)
+	all_names = "".join(names)
+	all_names = all_names[:-1]
+
 	# Sender #
 	jid = '623537891@chat.facebook.com'
 
 	# Recepient #
 	to = '-100000055336344@chat.facebook.com'
 
-	xmpp = SendMsgBot(jid,facebook_pwd,to, unicode(messages))
+	if int(item_count) == 0:
+		message = "In the last 50 posts there were " + item_count + " Macbook posts made. \n-UT Buy/Sell/Trade/Free Bot"
+	else:
+		message = "In the last 200 posts there were " + item_count + " Macbook posts made by:\n " + all_names + "\n-UT Buy/Sell/Trade/Free Bot"
+
+	xmpp = SendMsgBot(jid,facebook_pwd,to, unicode(message))
 
 	xmpp.credentials['api_key'] = app_id
 	xmpp.credentials['access_token'] = fb_token
