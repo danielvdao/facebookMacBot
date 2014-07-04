@@ -7,6 +7,7 @@ import sys
 import re 
 import sleekxmpp
 import logging
+import pyasn1
 from twilio.rest import TwilioRestClient 
 from fbxmpp import SendMsgBot
 
@@ -86,7 +87,7 @@ def send_txt(item_count, names):
 	if int(item_count) == 0:
 		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made.")
 	else:
-		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 200 posts there were " + item_count + " Macbook posts made by:\n " + all_names)
+		message = client.messages.create(to="+18322739257", from_="+18326102549", body="In the last 50 posts there were " + item_count + " Macbook posts made by:\n " + all_names)
 
 # Function to send the facebook message to Hoai Truong #
 def send_msg(item_count, names):
@@ -104,7 +105,7 @@ def send_msg(item_count, names):
 	if int(item_count) == 0:
 		message = "In the last 50 posts there were " + item_count + " Macbook posts made. \n-UT Buy/Sell/Trade/Free Bot"
 	else:
-		message = "In the last 200 posts there were " + item_count + " Macbook posts made by:\n " + all_names + "\n-UT Buy/Sell/Trade/Free Bot"
+		message = "In the last 50 posts there were " + item_count + " Macbook posts made by:\n " + all_names + "\n-UT Buy/Sell/Trade/Free Bot"
 
 	xmpp = SendMsgBot(jid,facebook_pwd,to, unicode(message))
 

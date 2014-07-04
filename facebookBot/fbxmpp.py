@@ -1,7 +1,7 @@
 import sleekxmpp
 import logging
 
-# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 
 # Based on what I learned here:
